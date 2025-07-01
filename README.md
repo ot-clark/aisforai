@@ -1,36 +1,299 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI-Powered Affiliate Marketing Management Platform
 
-## Getting Started
+A production-grade, scalable onboarding UI and backend API for an AI-powered affiliate marketing management platform MVP.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Onboarding System
+- **Multi-step form wizard** with 7 comprehensive steps
+- **Real-time validation** using Zod schemas
+- **Progress tracking** with visual indicators
+- **Responsive design** for all devices
+- **Accessibility compliant** components
+
+### Form Steps
+1. **Company Information** - Basic company details and industry
+2. **Budget & Contract** - Budget, payment terms, and commission rates
+3. **Target Audience** - Demographics, geography, and product details
+4. **Creative & Copy** - AI-generated content or upload existing creatives
+5. **Fraud & Security** - Fraud detection and affiliate approval settings
+6. **Notifications & Reporting** - Email alerts and dashboard preferences
+7. **Review & Submit** - Final review and submission
+
+### Technical Stack
+- **Frontend**: React 19, TypeScript, TailwindCSS
+- **Backend**: Next.js 15 API Routes
+- **Database**: PostgreSQL with Prisma ORM
+- **Form Handling**: Formik + Zod validation
+- **State Management**: React Context + Zustand
+- **UI Components**: Custom components with shadcn/ui patterns
+
+## 📦 Installation
+
+### Prerequisites
+- Node.js 18+ 
+- PostgreSQL 12+
+- npm or yarn
+
+### Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd a_is_for_ai
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env.local
+   ```
+   
+   Update `.env.local` with your configuration:
+   ```env
+   DATABASE_URL="postgresql://username:password@localhost:5432/affiliate_platform"
+   NEXTAUTH_SECRET="your-secret-key"
+   ```
+
+4. **Set up the database**
+   ```bash
+   # Generate Prisma client
+   npx prisma generate
+   
+   # Run database migrations
+   npx prisma db push
+   
+   # (Optional) Seed the database
+   npx prisma db seed
+   ```
+
+5. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+6. **Open your browser**
+   Navigate to [http://localhost:3000/onboarding](http://localhost:3000/onboarding)
+
+## 🏗️ Project Structure
+
+```
+├── app/
+│   ├── api/onboarding/submit/route.ts  # API endpoint
+│   ├── onboarding/page.tsx             # Onboarding page
+│   └── layout.js                       # Root layout
+├── components/
+│   ├── ui/                             # Reusable UI components
+│   │   ├── button.tsx
+│   │   ├── input.tsx
+│   │   └── select.tsx
+│   └── onboarding-form/                # Onboarding form components
+│       ├── onboarding-form.tsx         # Main form component
+│       ├── onboarding-progress.tsx     # Progress indicator
+│       └── steps/                      # Individual step components
+│           ├── company-info-step.tsx
+│           ├── budget-preferences-step.tsx
+│           ├── target-audience-step.tsx
+│           ├── creative-preferences-step.tsx
+│           ├── fraud-risk-step.tsx
+│           ├── notification-preferences-step.tsx
+│           └── review-step.tsx
+├── types/
+│   └── onboarding.ts                   # TypeScript types and schemas
+├── utils/
+│   ├── cn.ts                           # CSS class utilities
+│   ├── onboarding-steps.ts             # Step configuration
+│   └── validation.ts                   # Validation utilities
+├── prisma/
+│   └── schema.prisma                   # Database schema
+└── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔧 Development
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Development
+npm run dev              # Start development server
+npm run build            # Build for production
+npm run start            # Start production server
 
-## Learn More
+# Code Quality
+npm run lint             # Run ESLint
+npm run type-check       # Run TypeScript type checking
 
-To learn more about Next.js, take a look at the following resources:
+# Testing
+npm run test             # Run tests
+npm run test:watch       # Run tests in watch mode
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Database
+npx prisma generate      # Generate Prisma client
+npx prisma db push       # Push schema to database
+npx prisma studio        # Open Prisma Studio
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Code Style Guidelines
 
-## Deploy on Vercel
+- **Functional components** with hooks
+- **TypeScript strict mode** enabled
+- **Zod schemas** for validation
+- **TailwindCSS** for styling
+- **Conventional commits** for version control
+- **ESLint** for code quality
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Component Patterns
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```typescript
+// Example component structure
+interface ComponentProps {
+  // Props interface
+}
+
+export function Component({ prop1, prop2 }: ComponentProps) {
+  // Component logic
+  return (
+    // JSX with proper accessibility
+  );
+}
+```
+
+## 🧪 Testing
+
+### Unit Tests
+```bash
+npm run test
+```
+
+### Integration Tests
+```bash
+npm run test:integration
+```
+
+### E2E Tests
+```bash
+npm run test:e2e
+```
+
+## 🚀 Deployment
+
+### Production Build
+```bash
+npm run build
+npm start
+```
+
+### Environment Variables for Production
+- Set `NODE_ENV=production`
+- Configure production database URL
+- Set up proper secrets and API keys
+- Enable HTTPS
+- Configure CDN for static assets
+
+### Database Migration
+```bash
+npx prisma migrate deploy
+```
+
+## 📊 API Documentation
+
+### POST /api/onboarding/submit
+
+Submit onboarding form data.
+
+**Request Body:**
+```typescript
+{
+  companyInfo: {
+    companyName: string;
+    industry: string;
+    website: string;
+    companySize: string;
+    description: string;
+  };
+  budgetPreferences: {
+    monthlyBudget: number;
+    contractDuration: string;
+    paymentTerms: string;
+    commissionRate: number;
+    payoutFrequency: string;
+  };
+  // ... other form sections
+}
+```
+
+**Response:**
+```typescript
+{
+  success: boolean;
+  data?: {
+    onboardingId: string;
+    status: 'pending' | 'approved' | 'rejected';
+    nextSteps: string[];
+  };
+  error?: {
+    message: string;
+    code: string;
+    details?: ValidationError[];
+  };
+}
+```
+
+## 🔒 Security Features
+
+- **Input validation** with Zod schemas
+- **CSRF protection** (to be implemented)
+- **Rate limiting** (to be implemented)
+- **SQL injection prevention** via Prisma
+- **XSS protection** with input sanitization
+- **HTTPS enforcement** in production
+
+## 🎯 Future Enhancements
+
+### AI Features
+- **AI-powered affiliate matching** engine
+- **Autonomous campaign optimization** agent
+- **GPT-based copywriting** agent
+- **Real-time performance** dashboards
+- **Automated fraud detection** module
+- **AI-generated summaries** for clients
+
+### Platform Features
+- **User authentication** and authorization
+- **Campaign management** dashboard
+- **Affiliate portal** and tracking
+- **Payment processing** integration
+- **Analytics and reporting** tools
+- **Mobile app** development
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+For support and questions:
+- Create an issue in the repository
+- Contact the development team
+- Check the documentation
+
+## 🔄 Changelog
+
+### v0.1.0 (Current)
+- Initial onboarding system implementation
+- Multi-step form with validation
+- Database schema and API endpoints
+- Responsive UI components
+- TypeScript type safety

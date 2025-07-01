@@ -1,0 +1,172 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  onboardingRecords OnboardingRecord[]
+  campaigns         Campaign[]
+  affiliates        Affiliate[]
+
+  @@map("users")
+}
+
+model OnboardingRecord {
+  id        String   @id @default(cuid())
+  userId    String
+  status    OnboardingStatus @default(DRAFT)
+  
+  // Form data stored as JSON
+  companyInfo            Json
+  budgetPreferences      Json
+  targetAudience         Json
+  creativePreferences    Json
+  fraudRisk              Json
+  notificationPreferences Json
+  
+  // Metadata
+  submittedAt DateTime?
+  reviewedAt  DateTime?
+  reviewedBy  String?
+  reviewNotes String?
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("onboarding_records")
+}
+
+model Campaign {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  status    CampaignStatus @default(DRAFT)
+  
+  // Campaign settings
+  budget    Float
+  startDate DateTime?
+  endDate   DateTime?
+  
+  // Performance metrics
+  totalClicks    Int     @default(0)
+  totalConversions Int   @default(0)
+  totalRevenue   Float   @default(0)
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  affiliates Affiliate[]
+  creatives  Creative[]
+
+  @@map("campaigns")
+}
+
+model Affiliate {
+  id        String   @id @default(cuid())
+  userId    String
+  campaignId String?
+  
+  // Affiliate info
+  name      String
+  email     String
+  website   String?
+  score     Int      @default(0)
+  status    AffiliateStatus @default(PENDING)
+  
+  // Performance metrics
+  totalClicks    Int     @default(0)
+  totalConversions Int   @default(0)
+  totalRevenue   Float   @default(0)
+  
+  // Verification
+  isIdentityVerified Boolean @default(false)
+  hasBusinessLicense  Boolean @default(false)
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  campaign Campaign? @relation(fields: [campaignId], references: [id])
+
+  @@map("affiliates")
+}
+
+model Creative {
+  id        String   @id @default(cuid())
+  campaignId String
+  
+  // Creative info
+  name      String
+  type      CreativeType
+  content   String
+  url       String?
+  
+  // Performance metrics
+  impressions Int     @default(0)
+  clicks      Int     @default(0)
+  conversions Int     @default(0)
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@map("creatives")
+}
+
+// Enums
+enum OnboardingStatus {
+  DRAFT
+  SUBMITTED
+  REVIEWING
+  APPROVED
+  REJECTED
+}
+
+enum CampaignStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+  CANCELLED
+}
+
+enum AffiliateStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum CreativeType {
+  BANNER
+  TEXT
+  VIDEO
+  EMAIL
+  SOCIAL
+} 
