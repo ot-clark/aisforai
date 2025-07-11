@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
     const validation = validateFormData(onboardingFormSchema, body);
     
     if (!validation.success) {
+      console.error('Validation errors:', validation.errors);
       const error = createApiError(
         'Validation failed',
         'VALIDATION_ERROR',

@@ -4,7 +4,6 @@ import {
   budgetPreferencesSchema,
   targetAudienceSchema,
   creativePreferencesSchema,
-  fraudRiskSchema,
   notificationPreferencesSchema,
   type OnboardingStepConfig,
 } from '@/types/onboarding';
@@ -37,13 +36,6 @@ export const onboardingSteps: OnboardingStepConfig[] = [
     description: 'Upload existing creatives or let AI generate them',
     isRequired: false,
     validationSchema: creativePreferencesSchema,
-  },
-  {
-    id: 'fraud-risk',
-    title: 'Fraud & Security',
-    description: 'Configure fraud detection and affiliate approval',
-    isRequired: true,
-    validationSchema: fraudRiskSchema,
   },
   {
     id: 'notification-preferences',

@@ -10,11 +10,8 @@ export const companyInfoSchema = z.object({
 });
 
 export const budgetPreferencesSchema = z.object({
-  monthlyBudget: z.number().min(100, 'Minimum budget is $100'),
+  monthlyBudget: z.number().min(1000, 'Minimum budget is $1000'),
   contractDuration: z.enum(['1-month', '3-months', '6-months', '12-months']),
-  paymentTerms: z.enum(['net-15', 'net-30', 'net-45']),
-  commissionRate: z.number().min(5).max(50, 'Commission rate must be between 5% and 50%'),
-  payoutFrequency: z.enum(['weekly', 'bi-weekly', 'monthly']),
 });
 
 export const targetAudienceSchema = z.object({
@@ -32,19 +29,6 @@ export const creativePreferencesSchema = z.object({
   preferredTone: z.enum(['professional', 'casual', 'friendly', 'luxury', 'tech-savvy']),
   colorPreferences: z.array(z.string()).optional(),
   uploadFiles: z.array(z.string()).optional(), // File URLs
-});
-
-export const fraudRiskSchema = z.object({
-  fraudRiskLevel: z.enum(['low', 'medium', 'high']),
-  affiliateApprovalProcess: z.enum(['automatic', 'manual-review', 'ai-assisted']),
-  minimumAffiliateScore: z.number().min(0).max(100),
-  requireIdentityVerification: z.boolean(),
-  requireBusinessLicense: z.boolean(),
-  fraudDetectionSettings: z.object({
-    enableRealTimeMonitoring: z.boolean(),
-    enableGeographicRestrictions: z.boolean(),
-    enableDeviceFingerprinting: z.boolean(),
-  }),
 });
 
 export const notificationPreferencesSchema = z.object({
@@ -67,13 +51,12 @@ export const notificationPreferencesSchema = z.object({
   }),
 });
 
-// Complete onboarding form schema
+// Complete onboarding form schema (no fraudRisk)
 export const onboardingFormSchema = z.object({
   companyInfo: companyInfoSchema,
   budgetPreferences: budgetPreferencesSchema,
   targetAudience: targetAudienceSchema,
   creativePreferences: creativePreferencesSchema,
-  fraudRisk: fraudRiskSchema,
   notificationPreferences: notificationPreferencesSchema,
 });
 
@@ -82,7 +65,6 @@ export type CompanyInfo = z.infer<typeof companyInfoSchema>;
 export type BudgetPreferences = z.infer<typeof budgetPreferencesSchema>;
 export type TargetAudience = z.infer<typeof targetAudienceSchema>;
 export type CreativePreferences = z.infer<typeof creativePreferencesSchema>;
-export type FraudRisk = z.infer<typeof fraudRiskSchema>;
 export type NotificationPreferences = z.infer<typeof notificationPreferencesSchema>;
 export type OnboardingFormData = z.infer<typeof onboardingFormSchema>;
 
@@ -109,7 +91,6 @@ export interface OnboardingRecord {
   budgetPreferences: BudgetPreferences;
   targetAudience: TargetAudience;
   creativePreferences: CreativePreferences;
-  fraudRisk: FraudRisk;
   notificationPreferences: NotificationPreferences;
   status: 'draft' | 'submitted' | 'reviewing' | 'approved' | 'rejected';
   createdAt: Date;
@@ -126,7 +107,6 @@ export type OnboardingStep =
   | 'budget-preferences'
   | 'target-audience'
   | 'creative-preferences'
-  | 'fraud-risk'
   | 'notification-preferences'
   | 'review';
 

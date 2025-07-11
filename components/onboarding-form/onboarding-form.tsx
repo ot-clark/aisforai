@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { onboardingSteps, getStepById, getCompletionPercentage } from '@/utils/onboarding-steps';
 import { OnboardingFormData } from '@/types/onboarding';
@@ -80,6 +80,15 @@ const initialFormData: OnboardingFormData = {
 export function OnboardingForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const formik = useFormik({
     initialValues: initialFormData,
@@ -111,7 +120,8 @@ export function OnboardingForm() {
   });
 
   const currentStepConfig = onboardingSteps[currentStep];
-  const completionPercentage = getCompletionPercentage(formik.values);
+  const stepsCount = onboardingSteps.length - 1; // Exclude review step
+  const completionPercentage = Math.round((currentStep / stepsCount) * 100);
 
   const handleNext = useCallback(() => {
     if (currentStep < onboardingSteps.length - 1) {
@@ -211,72 +221,94 @@ export function OnboardingForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          {/* Header */}
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h1 className="text-2xl font-bold text-gray-900">
-              AI-Powered Affiliate Marketing Setup
-            </h1>
-            <p className="mt-1 text-sm text-gray-600">
-              Complete your onboarding to start your affiliate marketing campaign
-            </p>
+    <div className="min-h-screen bg-white">
+      {/* Logo/Header */}
+      <header className="fixed top-0 left-0 w-full z-30 bg-white/80 backdrop-blur-sm border-b border-gray-100">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-20">
+          <div className="flex items-center">
+            {/* Symbol part: always visible */}
+            <img src="/logo-affiliate.png" alt="A is for Affiliate" className="h-10 w-auto mr-2 select-none" style={{objectFit: 'contain', maxWidth: 48}} />
+            {/* Text part: hide on scroll */}
+            <span className={`font-bold text-2xl font-['Montserrat'] transition-all duration-500 origin-left ${scrolled ? 'opacity-0 translate-y-4 pointer-events-none' : 'opacity-100 translate-y-0'}`}>is for Affiliate</span>
+          </div>
+        </div>
+      </header>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-32">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 font-['Montserrat']">
+            SMARTER AFFILIATE MANAGEMENT
+          </h1>
+          <h2 className="text-2xl md:text-3xl font-semibold mb-6 font-['Montserrat'] bg-gradient-to-br from-rose-500 to-purple-700 bg-clip-text text-transparent">
+            Affiliate Wisdom for every step
+          </h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto font-['Montserrat']">
+            We Use AI to connect fast-growing <strong>E-Commerce</strong> and <strong>SaaS</strong> businesses with the skilled marketing experts that will accelerate their growth.
+          </p>
+        </div>
+
+        {/* Main Form Container */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          {/* Progress Section */}
+          <div className="bg-gray-50 px-8 py-6 border-b border-gray-200">
+            <OnboardingProgress
+              steps={onboardingSteps}
+              currentStep={currentStep}
+              completionPercentage={completionPercentage}
+              onStepClick={handleStepClick}
+            />
           </div>
 
-          {/* Progress Bar */}
-          <OnboardingProgress
-            steps={onboardingSteps}
-            currentStep={currentStep}
-            completionPercentage={completionPercentage}
-            onStepClick={handleStepClick}
-          />
-
           {/* Form Content */}
-          <div className="px-6 py-8">
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">
+          <div className="px-8 py-10">
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-2 font-['Montserrat']">
                 {currentStepConfig.title}
-              </h2>
-              <p className="mt-1 text-sm text-gray-600">
+              </h3>
+              <p className="text-gray-600 font-['Montserrat']">
                 {currentStepConfig.description}
               </p>
             </div>
 
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={formik.handleSubmit} className="space-y-8">
               {renderCurrentStep()}
 
               {/* Navigation Buttons */}
-              <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
-                <Button
+              <div className="flex justify-between pt-8 border-t border-gray-200">
+                <button
                   type="button"
-                  variant="outline"
                   onClick={handlePrevious}
                   disabled={currentStep === 0}
+                  className="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Previous
-                </Button>
+                </button>
 
                 {currentStep < onboardingSteps.length - 1 ? (
-                  <Button
+                  <button
                     type="button"
                     onClick={handleNext}
                     disabled={isSubmitting}
+                    className="btn-primary"
                   >
                     Next
-                  </Button>
+                  </button>
                 ) : (
-                  <Button
+                  <button
                     type="submit"
                     disabled={isSubmitting}
+                    className="btn-primary"
                   >
                     {isSubmitting ? 'Submitting...' : 'Submit Application'}
-                  </Button>
+                  </button>
                 )}
               </div>
             </form>
           </div>
         </div>
+
+        {/* Footer CTA */}
+        {/* Removed Get Started and Learn More buttons as requested */}
       </div>
     </div>
   );

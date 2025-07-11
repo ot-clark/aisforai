@@ -39,64 +39,106 @@ export function CompanyInfoStep({
   onChange,
 }: CompanyInfoStepProps) {
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Input
-          label="Company Name"
-          value={values.companyName}
-          onChange={(e) => onChange('companyName', e.target.value)}
-          error={touched?.companyName && errors?.companyName}
-          placeholder="Enter your company name"
-          required
-        />
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <label className="form-label font-['Montserrat']">
+            Company Name
+          </label>
+          <input
+            type="text"
+            value={values.companyName}
+            onChange={(e) => onChange('companyName', e.target.value)}
+            className="form-input font-['Montserrat']"
+            placeholder="Enter your company name"
+            required
+          />
+          {touched?.companyName && errors?.companyName && (
+            <p className="mt-1 text-sm text-red-600 font-['Montserrat']">{errors.companyName}</p>
+          )}
+        </div>
 
-        <Select
-          label="Industry"
-          options={industryOptions}
-          value={values.industry}
-          onChange={(value) => onChange('industry', value)}
-          error={touched?.industry && errors?.industry}
-          required
-        />
+        <div>
+          <label className="form-label font-['Montserrat']">
+            Industry
+          </label>
+          <select
+            value={values.industry}
+            onChange={(e) => onChange('industry', e.target.value)}
+            className="form-input font-['Montserrat']"
+            required
+          >
+            <option value="">Select your industry</option>
+            {industryOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          {touched?.industry && errors?.industry && (
+            <p className="mt-1 text-sm text-red-600 font-['Montserrat']">{errors.industry}</p>
+          )}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Input
-          label="Website"
-          type="url"
-          value={values.website}
-          onChange={(e) => onChange('website', e.target.value)}
-          error={touched?.website && errors?.website}
-          placeholder="https://yourcompany.com"
-          helperText="Enter your company's main website URL"
-          required
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <label className="form-label font-['Montserrat']">
+            Website
+          </label>
+          <input
+            type="url"
+            value={values.website}
+            onChange={(e) => onChange('website', e.target.value)}
+            className="form-input font-['Montserrat']"
+            placeholder="https://yourcompany.com"
+            required
+          />
+          {touched?.website && errors?.website && (
+            <p className="mt-1 text-sm text-red-600 font-['Montserrat']">{errors.website}</p>
+          )}
+          <p className="mt-1 text-sm text-gray-500 font-['Montserrat']">
+            Enter your company's main website URL
+          </p>
+        </div>
 
-        <Select
-          label="Company Size"
-          options={companySizeOptions}
-          value={values.companySize}
-          onChange={(value) => onChange('companySize', value)}
-          error={touched?.companySize && errors?.companySize}
-          required
-        />
+        <div>
+          <label className="form-label font-['Montserrat']">
+            Company Size
+          </label>
+          <select
+            value={values.companySize}
+            onChange={(e) => onChange('companySize', e.target.value)}
+            className="form-input font-['Montserrat']"
+            required
+          >
+            {companySizeOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          {touched?.companySize && errors?.companySize && (
+            <p className="mt-1 text-sm text-red-600 font-['Montserrat']">{errors.companySize}</p>
+          )}
+        </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="form-label font-['Montserrat']">
           Company Description
         </label>
         <textarea
           value={values.description}
           onChange={(e) => onChange('description', e.target.value)}
-          className="w-full h-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="form-input h-32 font-['Montserrat']"
           placeholder="Describe your company, products, and target market..."
           required
         />
         {touched?.description && errors?.description && (
-          <p className="mt-1 text-sm text-red-600">{errors.description}</p>
+          <p className="mt-1 text-sm text-red-600 font-['Montserrat']">{errors.description}</p>
         )}
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-500 font-['Montserrat']">
           Tell us about your business to help us match you with the right affiliates
         </p>
       </div>

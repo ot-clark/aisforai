@@ -48,16 +48,6 @@ export function FraudRiskStep({
           helperText="Set your fraud detection sensitivity"
           required
         />
-
-        <Select
-          label="Affiliate Approval Process"
-          options={affiliateApprovalOptions}
-          value={values.affiliateApprovalProcess}
-          onChange={(value) => onChange('affiliateApprovalProcess', value)}
-          error={touched?.affiliateApprovalProcess && errors?.affiliateApprovalProcess}
-          helperText="How affiliates will be approved"
-          required
-        />
       </div>
 
       <div>
