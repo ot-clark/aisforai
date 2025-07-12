@@ -42,14 +42,14 @@ export function CompanyInfoStep({
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
-          <label className="form-label font-['Montserrat']">
-            Company Name
+          <label className="form-label font-['Montserrat'] text-gray-900">
+            Company Name <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={values.companyName}
             onChange={(e) => onChange('companyName', e.target.value)}
-            className="form-input font-['Montserrat']"
+            className="form-input font-['Montserrat'] placeholder:text-gray-500 bg-gray-100 text-gray-900"
             placeholder="Enter your company name"
             required
           />
@@ -59,13 +59,13 @@ export function CompanyInfoStep({
         </div>
 
         <div>
-          <label className="form-label font-['Montserrat']">
-            Industry
+          <label className="form-label font-['Montserrat'] text-gray-900">
+            Industry <span className="text-red-500">*</span>
           </label>
           <select
             value={values.industry}
             onChange={(e) => onChange('industry', e.target.value)}
-            className="form-input font-['Montserrat']"
+            className="form-input font-['Montserrat'] bg-gray-100 text-gray-900"
             required
           >
             <option value="">Select your industry</option>
@@ -83,33 +83,33 @@ export function CompanyInfoStep({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
-          <label className="form-label font-['Montserrat']">
-            Website
+          <label className="form-label font-['Montserrat'] text-gray-900">
+            Website <span className="text-red-500">*</span>
           </label>
           <input
             type="url"
             value={values.website}
             onChange={(e) => onChange('website', e.target.value)}
-            className="form-input font-['Montserrat']"
+            className="form-input font-['Montserrat'] placeholder:text-gray-500 bg-gray-100 text-gray-900"
             placeholder="https://yourcompany.com"
             required
           />
           {touched?.website && errors?.website && (
             <p className="mt-1 text-sm text-red-600 font-['Montserrat']">{errors.website}</p>
           )}
-          <p className="mt-1 text-sm text-gray-500 font-['Montserrat']">
-            Enter your company's main website URL
+          <p className="mt-1 text-sm text-gray-700 font-['Montserrat']">
+            Enter your company&apos;s main website URL
           </p>
         </div>
 
         <div>
-          <label className="form-label font-['Montserrat']">
-            Company Size
+          <label className="form-label font-['Montserrat'] text-gray-900">
+            Company Size <span className="text-red-500">*</span>
           </label>
           <select
             value={values.companySize}
             onChange={(e) => onChange('companySize', e.target.value)}
-            className="form-input font-['Montserrat']"
+            className="form-input font-['Montserrat'] bg-gray-100 text-gray-900"
             required
           >
             {companySizeOptions.map((option) => (
@@ -125,20 +125,20 @@ export function CompanyInfoStep({
       </div>
 
       <div>
-        <label className="form-label font-['Montserrat']">
-          Company Description
+        <label className="form-label font-['Montserrat'] text-gray-900">
+          Company Description <span className="text-red-500">*</span>
         </label>
         <textarea
           value={values.description}
           onChange={(e) => onChange('description', e.target.value)}
-          className="form-input h-32 font-['Montserrat']"
+          className="form-input h-32 font-['Montserrat'] placeholder:text-gray-500 bg-gray-100 text-gray-900"
           placeholder="Describe your company, products, and target market..."
           required
         />
         {touched?.description && errors?.description && (
           <p className="mt-1 text-sm text-red-600 font-['Montserrat']">{errors.description}</p>
         )}
-        <p className="mt-1 text-sm text-gray-500 font-['Montserrat']">
+        <p className="mt-1 text-sm text-gray-700 font-['Montserrat']">
           Tell us about your business to help us match you with the right affiliates
         </p>
       </div>

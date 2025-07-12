@@ -13,11 +13,12 @@ export interface SelectProps
   error?: string;
   label?: string;
   helperText?: string;
+  required?: boolean;
   onChange?: (value: string) => void;
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, error, label, helperText, options, onChange, id, ...props }, ref) => {
+  ({ className, error, label, helperText, required, options, onChange, id, ...props }, ref) => {
     const selectId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
     
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -33,12 +34,12 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             htmlFor={selectId}
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            {label}
+            {label}{required && <span className="text-red-500 ml-1">*</span>}
           </label>
         )}
         <select
           className={cn(
-            'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+            'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-gray-700',
             error && 'border-red-500 focus-visible:ring-red-500',
             className
           )}
@@ -61,7 +62,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           <p className="mt-1 text-sm text-red-600">{error}</p>
         )}
         {helperText && !error && (
-          <p className="mt-1 text-sm text-gray-500">{helperText}</p>
+          <p className="mt-1 text-sm text-gray-700">{helperText}</p>
         )}
       </div>
     );

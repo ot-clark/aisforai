@@ -117,6 +117,7 @@ export function NotificationPreferencesStep({
             onChange={(value) => handleNestedChange('dashboardPreferences', 'defaultView', value)}
             error={touched?.dashboardPreferences?.defaultView && errors?.dashboardPreferences?.defaultView}
             helperText="The view you'll see when you first log in"
+            className="bg-gray-100 text-gray-900"
           />
 
           <Select
@@ -126,6 +127,7 @@ export function NotificationPreferencesStep({
             onChange={(value) => handleNestedChange('dashboardPreferences', 'refreshInterval', value)}
             error={touched?.dashboardPreferences?.refreshInterval && errors?.dashboardPreferences?.refreshInterval}
             helperText="How often dashboard data updates"
+            className="bg-gray-100 text-gray-900"
           />
         </div>
 

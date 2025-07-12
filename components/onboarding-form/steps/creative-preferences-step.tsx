@@ -93,6 +93,7 @@ export function CreativePreferencesStep({
           error={touched?.creativeType && errors?.creativeType}
           helperText="Choose how you want to handle creative content"
           required
+          className="bg-gray-100 text-gray-900"
         />
       </div>
 
@@ -105,6 +106,7 @@ export function CreativePreferencesStep({
           error={touched?.preferredTone && errors?.preferredTone}
           helperText="The tone of voice for AI-generated content"
           required
+          className="bg-gray-100 text-gray-900"
         />
       </div>
 
@@ -134,10 +136,10 @@ export function CreativePreferencesStep({
         <textarea
           value={values.brandGuidelines}
           onChange={(e) => onChange('brandGuidelines', e.target.value)}
-          className="w-full h-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full h-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-100 text-gray-900"
           placeholder="Describe your brand guidelines, voice, style preferences..."
         />
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-700">
           Help AI understand your brand voice and style preferences
         </p>
       </div>
@@ -165,7 +167,7 @@ export function CreativePreferencesStep({
               id="file-upload"
             />
             <label htmlFor="file-upload" className="cursor-pointer">
-              <div className="text-gray-600">
+              <div className="text-gray-700">
                 <p className="text-sm">Drag and drop files here, or click to select</p>
                 <p className="text-xs mt-1">Supports: Images, PDFs, Word documents</p>
               </div>
@@ -177,7 +179,7 @@ export function CreativePreferencesStep({
               <h4 className="text-sm font-medium text-gray-700 mb-2">Uploaded Files:</h4>
               <ul className="space-y-1">
                 {values.uploadFiles.map((file, index) => (
-                  <li key={index} className="text-sm text-gray-600">
+                  <li key={index} className="text-sm text-gray-700">
                     {file}
                   </li>
                 ))}

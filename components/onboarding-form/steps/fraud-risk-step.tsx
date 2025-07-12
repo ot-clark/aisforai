@@ -47,6 +47,7 @@ export function FraudRiskStep({
           error={touched?.fraudRiskLevel && errors?.fraudRiskLevel}
           helperText="Set your fraud detection sensitivity"
           required
+          className="bg-gray-100 text-gray-900"
         />
       </div>
 
@@ -62,6 +63,7 @@ export function FraudRiskStep({
           max="100"
           helperText="Minimum score required for affiliate approval (0-100)"
           required
+          className="bg-gray-100 text-gray-900"
         />
       </div>
 

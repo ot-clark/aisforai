@@ -36,7 +36,8 @@ export function BudgetPreferencesStep({
           helperText="Minimum budget is $1000"
           min="1000"
           step="100"
-          required
+          required={true}
+          className="bg-gray-100 text-gray-900"
         />
 
         <Select
@@ -45,7 +46,8 @@ export function BudgetPreferencesStep({
           value={values.contractDuration}
           onChange={(value) => onChange('contractDuration', value)}
           error={touched?.contractDuration && errors?.contractDuration}
-          required
+          required={true}
+          className="bg-gray-100 text-gray-900"
         />
       </div>
 

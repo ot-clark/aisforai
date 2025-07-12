@@ -24,7 +24,7 @@ export function OnboardingProgress({
           <span className="text-sm font-semibold text-gray-700 font-['Montserrat']">
             Progress: {completionPercentage}%
           </span>
-          <span className="text-sm text-gray-500 font-['Montserrat']">
+          <span className="text-sm text-gray-700 font-['Montserrat']">
             Step {currentStep + 1} of {steps.length}
           </span>
         </div>
@@ -74,7 +74,7 @@ export function OnboardingProgress({
                     'text-xs font-semibold whitespace-normal max-w-xs mx-auto font-["Montserrat"]',
                     (isCompleted || isCurrent)
                       ? 'bg-gradient-to-br from-rose-500 to-purple-700 bg-clip-text text-transparent'
-                      : 'text-gray-500'
+                      : 'text-gray-700'
                   )}
                 >
                   {step.title}

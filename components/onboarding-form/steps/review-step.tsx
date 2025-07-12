@@ -149,33 +149,6 @@ export function ReviewStep({
           </div>
         </div>
 
-        {/* Fraud Risk */}
-        <div className="border border-gray-200 rounded-lg p-4">
-          <h3 className="text-lg font-medium text-gray-900 mb-3">Fraud & Security</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div>
-              <span className="font-medium text-gray-700">Fraud Risk Level:</span>
-              <p className="text-gray-900">{formData.fraudRisk.fraudRiskLevel}</p>
-            </div>
-            <div>
-              <span className="font-medium text-gray-700">Approval Process:</span>
-              <p className="text-gray-900">{formData.fraudRisk.affiliateApprovalProcess}</p>
-            </div>
-            <div>
-              <span className="font-medium text-gray-700">Minimum Affiliate Score:</span>
-              <p className="text-gray-900">{formData.fraudRisk.minimumAffiliateScore}</p>
-            </div>
-            <div>
-              <span className="font-medium text-gray-700">Identity Verification:</span>
-              <p className="text-gray-900">{formData.fraudRisk.requireIdentityVerification ? 'Required' : 'Not Required'}</p>
-            </div>
-            <div>
-              <span className="font-medium text-gray-700">Business License:</span>
-              <p className="text-gray-900">{formData.fraudRisk.requireBusinessLicense ? 'Required' : 'Not Required'}</p>
-            </div>
-          </div>
-        </div>
-
         {/* Notification Preferences */}
         <div className="border border-gray-200 rounded-lg p-4">
           <h3 className="text-lg font-medium text-gray-900 mb-3">Notifications & Reporting</h3>
@@ -200,15 +173,7 @@ export function ReviewStep({
         </div>
       </div>
 
-      <div className="flex justify-center pt-6">
-        <Button
-          onClick={onSubmit}
-          disabled={isSubmitting}
-          className="px-8 py-3 text-lg"
-        >
-          {isSubmitting ? 'Submitting Application...' : 'Submit Application'}
-        </Button>
-      </div>
+
     </div>
   );
 } 

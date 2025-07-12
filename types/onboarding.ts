@@ -12,6 +12,9 @@ export const companyInfoSchema = z.object({
 export const budgetPreferencesSchema = z.object({
   monthlyBudget: z.number().min(1000, 'Minimum budget is $1000'),
   contractDuration: z.enum(['1-month', '3-months', '6-months', '12-months']),
+  paymentTerms: z.enum(['net-30', 'net-15', 'net-7', 'immediate']),
+  commissionRate: z.number().min(1, 'Commission rate must be at least 1%').max(50, 'Commission rate cannot exceed 50%'),
+  payoutFrequency: z.enum(['weekly', 'bi-weekly', 'monthly', 'quarterly']),
 });
 
 export const targetAudienceSchema = z.object({
@@ -46,7 +49,9 @@ export const notificationPreferencesSchema = z.object({
   }),
   integrationPreferences: z.object({
     slackNotifications: z.boolean(),
-    slackWebhookUrl: z.string().url().optional(),
+    slackWebhookUrl: z.string().refine((val) => val === '' || /^https?:\/\/.+/.test(val), {
+      message: 'Please enter a valid URL or leave empty'
+    }),
     zapierIntegration: z.boolean(),
   }),
 });

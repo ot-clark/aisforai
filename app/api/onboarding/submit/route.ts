@@ -1,14 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { onboardingFormSchema } from '@/types/onboarding';
 import { validateFormData, createApiError } from '@/utils/validation';
+import { supabaseAdmin } from '@/utils/supabase-admin';
 
 export async function POST(request: NextRequest) {
   try {
     // Parse request body
     const body = await request.json();
+    
+    // Debug: Log the incoming data
+    console.log('Incoming form data:', JSON.stringify(body, null, 2));
 
-    // Validate the incoming data
-    const validation = validateFormData(onboardingFormSchema, body);
+    // Remove fraudRisk if present
+    const { fraudRisk, ...filteredBody } = body;
+
+    // Validate the incoming data (ignore fraudRisk)
+    const validation = validateFormData(onboardingFormSchema, filteredBody);
     
     if (!validation.success) {
       console.error('Validation errors:', validation.errors);
@@ -26,13 +33,30 @@ export async function POST(request: NextRequest) {
     }
 
     const formData = validation.data;
+    console.log('Validated form data:', JSON.stringify(formData, null, 2));
 
-    // TODO: Add database storage logic here
-    // For now, we'll simulate successful storage
+    // Insert into Supabase
+    const { error: dbError } = await supabaseAdmin
+      .from('onboarding_applications')
+      .insert([{ form_data: formData }]);
+
+    if (dbError) {
+      console.error('Supabase insert error:', dbError);
+      const error = createApiError(
+        'Database insert failed',
+        'DB_ERROR',
+        500,
+        [{ field: 'database', message: dbError.message, code: dbError.code || 'DB_ERROR' }]
+      );
+      return NextResponse.json(
+        { success: false, error },
+        { status: 500 }
+      );
+    }
+
+    console.log('Successfully inserted into Supabase');
+
     const onboardingId = `onboarding_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-    // Simulate processing time
-    await new Promise(resolve => setTimeout(resolve, 1000));
 
     // Return success response
     return NextResponse.json({

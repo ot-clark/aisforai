@@ -74,7 +74,7 @@ export function TargetAudienceStep({
     <div className="space-y-6">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Target Demographics
+          Target Demographics <span className="text-red-500">*</span>
         </label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {demographicOptions.map((option) => (
@@ -96,7 +96,7 @@ export function TargetAudienceStep({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Target Geographic Regions
+          Target Geographic Regions <span className="text-red-500">*</span>
         </label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {geographicOptions.map((option) => (
@@ -118,7 +118,7 @@ export function TargetAudienceStep({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Target Interests
+          Target Interests <span className="text-red-500">*</span>
         </label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {interestOptions.map((option) => (
@@ -145,7 +145,8 @@ export function TargetAudienceStep({
           value={values.productCategory}
           onChange={(value) => onChange('productCategory', value)}
           error={touched?.productCategory && errors?.productCategory}
-          required
+          required={true}
+          className="bg-gray-100 text-gray-900"
         />
 
         <Input
@@ -157,26 +158,27 @@ export function TargetAudienceStep({
           placeholder="50"
           min="1"
           step="0.01"
-          required
+          required={true}
+          className="bg-gray-100 text-gray-900"
         />
       </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Product Description
+          Product Description <span className="text-red-500">*</span>
         </label>
         <textarea
           value={values.productDescription}
           onChange={(e) => onChange('productDescription', e.target.value)}
-          className="w-full h-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full h-32 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
           placeholder="Describe your products or services in detail..."
           required
         />
         {touched?.productDescription && errors?.productDescription && (
           <p className="mt-1 text-sm text-red-600">{errors.productDescription}</p>
         )}
-        <p className="mt-1 text-sm text-gray-500">
-          Help affiliates understand what they'll be promoting
+        <p className="mt-1 text-sm text-gray-700">
+          Help affiliates understand what they&apos;ll be promoting
         </p>
       </div>
     </div>
