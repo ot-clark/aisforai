@@ -55,9 +55,21 @@ A production-grade, scalable onboarding UI and backend API for an AI-powered aff
    
    Update `.env.local` with your configuration:
    ```env
+   # Database Configuration
    DATABASE_URL="postgresql://username:password@localhost:5432/affiliate_platform"
    NEXTAUTH_SECRET="your-secret-key"
+   
+   # Supabase Configuration (Required for API functionality)
+   SUPABASE_URL="https://your-project-id.supabase.co"
+   SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
    ```
+   
+   **Getting Supabase Credentials:**
+   1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
+   2. Create a new project or select existing one
+   3. Go to Settings → API
+   4. Copy the "Project URL" as `SUPABASE_URL`
+   5. Copy the "service_role" key as `SUPABASE_SERVICE_ROLE_KEY`
 
 4. **Set up the database**
    ```bash
@@ -78,6 +90,8 @@ A production-grade, scalable onboarding UI and backend API for an AI-powered aff
 
 6. **Open your browser**
    Navigate to [http://localhost:3000/onboarding](http://localhost:3000/onboarding)
+
+**Note:** If Supabase is not configured, the API will still work in development mode but will skip database inserts and show a warning. For production, Supabase configuration is required.
 
 ## 🏗️ Project Structure
 
@@ -181,7 +195,27 @@ npm run test:e2e
 
 ## 🚀 Deployment
 
-### Production Build
+### Vercel Deployment (Recommended)
+
+1. **Connect to Vercel**
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Click "New Project" and import your repository
+   - Vercel will auto-detect Next.js configuration
+
+2. **Configure Environment Variables**
+   In Vercel dashboard → Settings → Environment Variables:
+   ```env
+   SUPABASE_URL=https://your-project-id.supabase.co
+   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+   DATABASE_URL=your-database-url (optional)
+   NEXTAUTH_SECRET=your-secret-key (optional)
+   ```
+
+3. **Deploy**
+   - Push to your main branch to trigger automatic deployment
+   - Or manually deploy from Vercel dashboard
+
+### Manual Production Build
 ```bash
 npm run build
 npm start

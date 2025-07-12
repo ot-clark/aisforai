@@ -35,6 +35,41 @@ export async function POST(request: NextRequest) {
     const formData = validation.data;
     console.log('Validated form data:', JSON.stringify(formData, null, 2));
 
+    // Check if Supabase is properly configured
+    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.warn('Supabase not configured - skipping database insert');
+      
+      // In development, we can still return success for testing
+      if (process.env.NODE_ENV === 'development') {
+        const onboardingId = `onboarding_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        
+        return NextResponse.json({
+          success: true,
+          data: {
+            onboardingId,
+            status: 'pending',
+            nextSteps: [
+              'Review your application details',
+              'Our team will review your application within 24-48 hours',
+              'You will receive an email with next steps',
+              'Set up your affiliate dashboard once approved'
+            ],
+            note: 'Database insert skipped - Supabase not configured'
+          }
+        });
+      } else {
+        const error = createApiError(
+          'Database not configured',
+          'DB_CONFIG_ERROR',
+          500
+        );
+        return NextResponse.json(
+          { success: false, error },
+          { status: 500 }
+        );
+      }
+    }
+
     // Insert into Supabase
     const { error: dbError } = await supabaseAdmin
       .from('onboarding_applications')
