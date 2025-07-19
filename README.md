@@ -4,12 +4,20 @@ A production-grade, scalable onboarding UI and backend API for an AI-powered aff
 
 ## 🚀 Features
 
+### Authentication System
+- **Supabase Auth integration** with email/password authentication
+- **Protected routes** - only authenticated users can access onboarding
+- **Automatic login** after successful signup
+- **Session management** with automatic token handling
+- **Form validation** with clear error messages and loading states
+
 ### Onboarding System
 - **Multi-step form wizard** with 7 comprehensive steps
 - **Real-time validation** using Zod schemas
 - **Progress tracking** with visual indicators
 - **Responsive design** for all devices
 - **Accessibility compliant** components
+- **User-specific data** - form responses linked to authenticated users
 
 ### Form Steps
 1. **Company Information** - Basic company details and industry
@@ -59,7 +67,9 @@ A production-grade, scalable onboarding UI and backend API for an AI-powered aff
    DATABASE_URL="postgresql://username:password@localhost:5432/affiliate_platform"
    NEXTAUTH_SECRET="your-secret-key"
    
-   # Supabase Configuration (Required for API functionality)
+   # Supabase Configuration (Required for authentication and API functionality)
+   NEXT_PUBLIC_SUPABASE_URL="https://your-project-id.supabase.co"
+   NEXT_PUBLIC_SUPABASE_ANON_KEY="your-anon-key"
    SUPABASE_URL="https://your-project-id.supabase.co"
    SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
    ```
@@ -68,8 +78,9 @@ A production-grade, scalable onboarding UI and backend API for an AI-powered aff
    1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
    2. Create a new project or select existing one
    3. Go to Settings → API
-   4. Copy the "Project URL" as `SUPABASE_URL`
-   5. Copy the "service_role" key as `SUPABASE_SERVICE_ROLE_KEY`
+   4. Copy the "Project URL" as `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_URL`
+   5. Copy the "anon" key as `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   6. Copy the "service_role" key as `SUPABASE_SERVICE_ROLE_KEY`
 
 4. **Set up the database**
    ```bash
@@ -89,7 +100,7 @@ A production-grade, scalable onboarding UI and backend API for an AI-powered aff
    ```
 
 6. **Open your browser**
-   Navigate to [http://localhost:3000/onboarding](http://localhost:3000/onboarding)
+   Navigate to [http://localhost:3000](http://localhost:3000) - you'll be redirected to the signup page
 
 **Note:** If Supabase is not configured, the API will still work in development mode but will skip database inserts and show a warning. For production, Supabase configuration is required.
 
@@ -98,13 +109,19 @@ A production-grade, scalable onboarding UI and backend API for an AI-powered aff
 ```
 ├── app/
 │   ├── api/onboarding/submit/route.ts  # API endpoint
-│   ├── onboarding/page.tsx             # Onboarding page
+│   ├── signup/page.tsx                 # Signup page
+│   ├── signin/page.tsx                 # Signin page
+│   ├── onboarding/page.tsx             # Onboarding page (protected)
 │   └── layout.js                       # Root layout
 ├── components/
 │   ├── ui/                             # Reusable UI components
 │   │   ├── button.tsx
 │   │   ├── input.tsx
 │   │   └── select.tsx
+│   ├── auth/                           # Authentication components
+│   │   ├── signup-form.tsx             # Signup form
+│   │   ├── signin-form.tsx             # Signin form
+│   │   └── protected-route.tsx         # Route protection
 │   └── onboarding-form/                # Onboarding form components
 │       ├── onboarding-form.tsx         # Main form component
 │       ├── onboarding-progress.tsx     # Progress indicator
@@ -121,7 +138,10 @@ A production-grade, scalable onboarding UI and backend API for an AI-powered aff
 ├── utils/
 │   ├── cn.ts                           # CSS class utilities
 │   ├── onboarding-steps.ts             # Step configuration
-│   └── validation.ts                   # Validation utilities
+│   ├── validation.ts                   # Validation utilities
+│   ├── supabase-client.ts              # Supabase client configuration
+│   ├── supabase-admin.ts               # Supabase admin configuration
+│   └── use-auth.ts                     # Authentication hook
 ├── prisma/
 │   └── schema.prisma                   # Database schema
 └── package.json

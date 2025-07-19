@@ -2,9 +2,44 @@ import { NextRequest, NextResponse } from 'next/server';
 import { onboardingFormSchema } from '@/types/onboarding';
 import { validateFormData, createApiError } from '@/utils/validation';
 import { supabaseAdmin } from '@/utils/supabase-admin';
+import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: NextRequest) {
   try {
+    // Get the authorization header
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json(
+        { success: false, error: { message: 'Unauthorized', code: 'UNAUTHORIZED' } },
+        { status: 401 }
+      );
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    
+    // Create a Supabase client with the user's token
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseAnonKey) {
+      return NextResponse.json(
+        { success: false, error: { message: 'Server configuration error', code: 'CONFIG_ERROR' } },
+        { status: 500 }
+      );
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    
+    // Get the user from the token
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    
+    if (authError || !user) {
+      return NextResponse.json(
+        { success: false, error: { message: 'Invalid token', code: 'INVALID_TOKEN' } },
+        { status: 401 }
+      );
+    }
+
     // Parse request body
     const body = await request.json();
     
@@ -70,10 +105,13 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Insert into Supabase
+    // Insert into Supabase with user ID
     const { error: dbError } = await supabaseAdmin
       .from('onboarding_applications')
-      .insert([{ form_data: formData }]);
+      .insert([{ 
+        user_id: user.id,
+        form_data: formData 
+      }]);
 
     if (dbError) {
       console.error('Supabase insert error:', dbError);

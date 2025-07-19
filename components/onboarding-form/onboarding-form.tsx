@@ -13,6 +13,7 @@ import { CreativePreferencesStep } from './steps/creative-preferences-step';
 import { NotificationPreferencesStep } from './steps/notification-preferences-step';
 import { ReviewStep } from './steps/review-step';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/utils/use-auth';
 
 const initialFormData: OnboardingFormData = {
   companyInfo: {
@@ -79,6 +80,7 @@ export function OnboardingForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { session } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -113,10 +115,17 @@ export function OnboardingForm() {
       try {
         console.log('Submitting form data:', JSON.stringify(values, null, 2));
         
+        // Get the access token from the session
+        const accessToken = session?.access_token;
+        if (!accessToken) {
+          throw new Error('No authentication token available');
+        }
+        
         const response = await fetch('/api/onboarding/submit', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
           },
           body: JSON.stringify(values),
         });
